@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.15">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -15,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieStore.API.DataAccess.EntityFramework\MovieStore.API.DataAccess.EntityFramework.csproj" />
+    <ProjectReference Include="..\MovieStore.API.Business\MovieStore.API.Business.csproj" />
   </ItemGroup>
 
 </Project>

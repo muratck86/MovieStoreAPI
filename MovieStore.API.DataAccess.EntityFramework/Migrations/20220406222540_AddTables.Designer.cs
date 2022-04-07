@@ -10,7 +10,7 @@ using MovieStore.API.DataAccess.EntityFramework;
 namespace MovieStore.API.DataAccess.EntityFramework.Migrations
 {
     [DbContext(typeof(MovieStoreDbContext))]
-    [Migration("20220406005642_AddTables")]
+    [Migration("20220406222540_AddTables")]
     partial class AddTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,7 +228,7 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Purchase", b =>
                 {
                     b.HasOne("MovieStore.API.Domain.Entities.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Purchases")
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("MovieStore.API.Domain.Entities.Movie", "Movie")
@@ -248,6 +248,8 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Customer", b =>
                 {
                     b.Navigation("FavouriteGenres");
+
+                    b.Navigation("Purchases");
                 });
 
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Director", b =>

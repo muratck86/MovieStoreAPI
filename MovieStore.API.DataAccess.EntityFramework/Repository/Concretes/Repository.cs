@@ -31,8 +31,8 @@ namespace MovieStore.API.DataAccess.EntityFramework.Repository.Concretes
             _unitOfWork.Context.Set<T>().Add(entity);
         }
         public void Update(T entity)
-        {
-            _unitOfWork.Context.Set<T>().Update(entity);
+        {   
+            _unitOfWork.Context.Entry<T>(entity).State = EntityState.Modified;
         }
         public void Delete(T entity)
         {
@@ -40,7 +40,18 @@ namespace MovieStore.API.DataAccess.EntityFramework.Repository.Concretes
             if(exist is not null)
             {
                 exist.IsDeleted = true;
-                _unitOfWork.Context.Entry(exist).State = EntityState.Modified;
+                _unitOfWork.Context.Entry<T>(exist).State = EntityState.Modified;
+            }
+        }
+
+        public void Undelete(int id)
+        {
+            var exist = _unitOfWork.Context.Set<T>().SingleOrDefault(e => e.Id == id);
+            if(exist is not null)
+            {
+                exist.IsDeleted = false;
+                _unitOfWork.Context.Entry<T>(exist).State = EntityState.Modified;
+                _unitOfWork.Commit();
             }
         }
     }

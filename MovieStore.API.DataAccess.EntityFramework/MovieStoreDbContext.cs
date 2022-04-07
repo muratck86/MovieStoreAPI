@@ -3,7 +3,7 @@ using MovieStore.API.Domain.Entities;
 
 namespace MovieStore.API.DataAccess.EntityFramework
 {
-    public class MovieStoreDbContext : DbContext
+    public class MovieStoreDbContext : DbContext, IMovieStoreDbContext
     {
         public MovieStoreDbContext(DbContextOptions<MovieStoreDbContext> options) : base(options) {}
         public DbSet<Customer> Customers { get; set; }

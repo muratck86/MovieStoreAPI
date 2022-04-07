@@ -226,7 +226,7 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Purchase", b =>
                 {
                     b.HasOne("MovieStore.API.Domain.Entities.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Purchases")
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("MovieStore.API.Domain.Entities.Movie", "Movie")
@@ -246,6 +246,8 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Customer", b =>
                 {
                     b.Navigation("FavouriteGenres");
+
+                    b.Navigation("Purchases");
                 });
 
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Director", b =>

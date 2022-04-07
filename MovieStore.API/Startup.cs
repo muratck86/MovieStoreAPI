@@ -1,18 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MovieStore.API.Business.Common;
 using MovieStore.API.DataAccess.EntityFramework;
+using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
+using MovieStore.API.DataAccess.EntityFramework.Repository.Concretes;
 
 namespace MovieStore.API
 {
@@ -35,6 +33,11 @@ namespace MovieStore.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieStore.API", Version = "v1" });
             });
             services.AddDbContext<MovieStoreDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient(typeof(IRepository<>),typeof(Repository<>));
+            var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile());});
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
