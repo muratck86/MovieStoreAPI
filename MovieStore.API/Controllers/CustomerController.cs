@@ -44,9 +44,9 @@ namespace MovieStore.API.Controllers
             return Ok(result);
         }
 
-        [Route("add")]
+        [Route("create")]
         [HttpPost]
-        public IActionResult Add([FromBody] CreateCustomerModel model)
+        public IActionResult Create([FromBody] CreateCustomerModel model)
         {
             CreateCustomerCommand comand = new CreateCustomerCommand(_unitOfWork, _mapper, _repository);
             comand.Model = model;
@@ -77,7 +77,7 @@ namespace MovieStore.API.Controllers
 
         [Route("recover/{id}")]
         [HttpGet]
-        public IActionResult Undelete(int id)
+        public IActionResult Recover(int id)
         {
             _repository.Undelete(id);
             return Ok();

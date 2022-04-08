@@ -26,14 +26,7 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.UpdateC
             var customer = _repository.Get(e => e.Id == CustomerId);
             if(customer is null)
                 throw new InvalidOperationException($"Customer id {CustomerId} not found.");
-            customer.Name = PropertyUpdator.Update(customer.Name, Model.Name);
-            customer.LastName = PropertyUpdator.Update(customer.LastName, Model.LastName);
-            customer.Email = PropertyUpdator.Update(customer.Email, Model.Email);
-            customer.Password = PropertyUpdator.Update(customer.Password, Model.Password);
-            customer.BirthCity = PropertyUpdator.Update(customer.BirthCity, Model.City);
-            var strDate = PropertyUpdator.Update(customer.BirthDate.Date.ToString(), Model.BirthDate.Date.ToString());
-            customer.BirthDate = DateTime.Parse(strDate);
-
+            PropertyUpdateHelper.Update(customer, Model);
             _repository.Update(customer);
             _unitOfWork.Commit();
         }
@@ -45,7 +38,7 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.UpdateC
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string City { get; set; }
+        public string BirthCity { get; set; }
         public DateTime BirthDate { get; set; }
     }
 }

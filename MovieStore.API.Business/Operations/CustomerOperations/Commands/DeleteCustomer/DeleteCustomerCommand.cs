@@ -24,7 +24,6 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.DeleteC
             var customer = _repository.Get(e => e.Id == CustomerId);
             if(customer is null)
                 throw new InvalidOperationException($"Customer id {CustomerId} not found.");
-            
             _repository.Delete(customer);
             _unitOfWork.Commit();
         }

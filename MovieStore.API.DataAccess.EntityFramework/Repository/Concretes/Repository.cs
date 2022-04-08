@@ -36,12 +36,9 @@ namespace MovieStore.API.DataAccess.EntityFramework.Repository.Concretes
         }
         public void Delete(T entity)
         {
-            var exist = _unitOfWork.Context.Set<T>().SingleOrDefault(e => e.Id == entity.Id);
-            if(exist is not null)
-            {
-                exist.IsDeleted = true;
-                _unitOfWork.Context.Entry<T>(exist).State = EntityState.Modified;
-            }
+
+            entity.IsDeleted = true;
+            _unitOfWork.Context.Entry<T>(entity).State = EntityState.Modified;
         }
 
         public void Undelete(int id)

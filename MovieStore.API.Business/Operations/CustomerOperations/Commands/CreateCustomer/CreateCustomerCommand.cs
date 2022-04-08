@@ -22,7 +22,7 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.CreateC
         {
             var customer = _repository.Get(x => x.Email == Model.Email);
             if(customer is not null)
-                throw new InvalidOperationException("This email is already used. Forgot your password?");
+                throw new InvalidOperationException("This email is already bind to a Customer. Forgot your password?");
             customer = _mapper.Map<Customer>(Model);
             _repository.Add(customer);
             _unitOfWork.Commit();
