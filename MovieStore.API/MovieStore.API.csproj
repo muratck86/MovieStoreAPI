@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MovieStore.API.DataAccess.EntityFramework\MovieStore.API.DataAccess.EntityFramework.csproj" />
     <ProjectReference Include="..\MovieStore.API.Business\MovieStore.API.Business.csproj" />
+    <ProjectReference Include="..\MovieStore.API.Common\MovieStore.API.Common.csproj" />
   </ItemGroup>
 
 </Project>

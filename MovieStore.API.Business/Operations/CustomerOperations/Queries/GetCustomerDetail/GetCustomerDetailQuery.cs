@@ -20,7 +20,7 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Queries.GetCusto
 
         public CustomerDetailModel Handle()
         {
-            var customer = _repository.Get(c => c.Id == CustomerId);
+            var customer = _repository.Get(c => c.Id == CustomerId && c.IsDeleted == false);
             if(customer is null)
                 throw new InvalidOperationException("Customer not found.");
             return _mapper.Map<CustomerDetailModel>(customer);

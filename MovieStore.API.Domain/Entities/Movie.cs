@@ -7,9 +7,8 @@ namespace MovieStore.API.Domain.Entities
     {
         public string Title { get; set; }
         public int Year { get; set; }
-        public Director Director { get; set; }
-        public List<Player> Players { get; set; }
         public double Price { get; set; }
-        public List<Genre> Genres { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

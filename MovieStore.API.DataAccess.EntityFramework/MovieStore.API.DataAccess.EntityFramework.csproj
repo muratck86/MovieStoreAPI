@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieStore.API.Domain\MovieStore.API.Domain.csproj" />
+    <ProjectReference Include="..\MovieStore.API.Common\MovieStore.API.Common.csproj" />
   </ItemGroup>
 
 </Project>

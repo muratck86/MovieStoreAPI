@@ -14,22 +14,31 @@ namespace MovieStore.API.Controllers
     [Route("[Controller]s")]
     public class CustomerController : ControllerBase
     {
-        IUnitOfWork _unitOfWork;
-        private readonly IRepository<Customer> _repository;
+        private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<Person> _personRepository;
+        private readonly IRepository<PersonRole> _personroleRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CustomerController(IRepository<Customer> repository, IMapper mapper, IUnitOfWork unitOfWork)
+        public CustomerController(
+            IRepository<Customer> customerRepository, 
+            IRepository<Person> personRepository, 
+            IRepository<PersonRole> personroleRepository, 
+            IUnitOfWork unitOfWork, 
+            IMapper mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _customerRepository = customerRepository;
+            _personRepository = personRepository;
+            _personroleRepository = personroleRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [Route("getall")]
         [HttpGet]
         public IActionResult GetCustomers()
         {
-            GetCustomersQuery query = new GetCustomersQuery(_repository, _mapper);
+            GetCustomersQuery query = new GetCustomersQuery(_customerRepository, _mapper);
             var result = query.Handle();
             return Ok(result);
         }
@@ -38,7 +47,7 @@ namespace MovieStore.API.Controllers
         [HttpGet]
         public IActionResult Get(int id)
         {
-            GetCustomerDetailQuery query = new GetCustomerDetailQuery(_repository, _mapper);
+            GetCustomerDetailQuery query = new GetCustomerDetailQuery(_customerRepository, _mapper);
             query.CustomerId = id;
             var result = query.Handle();
             return Ok(result);
@@ -48,7 +57,7 @@ namespace MovieStore.API.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] CreateCustomerModel model)
         {
-            CreateCustomerCommand comand = new CreateCustomerCommand(_unitOfWork, _mapper, _repository);
+            CreateCustomerCommand comand = new CreateCustomerCommand(_customerRepository,_personRepository,_personroleRepository,_unitOfWork, _mapper);
             comand.Model = model;
             comand.Handle();
             return Ok();
@@ -58,7 +67,7 @@ namespace MovieStore.API.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            DeleteCustomerCommand command = new DeleteCustomerCommand(_unitOfWork, _mapper, _repository);
+            DeleteCustomerCommand command = new DeleteCustomerCommand(_unitOfWork, _mapper, _customerRepository);
             command.CustomerId = id;
             command.Handle();
             return Ok();
@@ -68,7 +77,7 @@ namespace MovieStore.API.Controllers
         [HttpPost]
         public IActionResult Update(int id, [FromBody] UpdateCustomerModel model)
         {
-            UpdateCustomerCommand command = new UpdateCustomerCommand(_unitOfWork, _mapper, _repository);
+            UpdateCustomerCommand command = new UpdateCustomerCommand(_unitOfWork, _mapper, _customerRepository);
             command.CustomerId = id;
             command.Model = model;
             command.Handle();
@@ -79,7 +88,7 @@ namespace MovieStore.API.Controllers
         [HttpGet]
         public IActionResult Recover(int id)
         {
-            _repository.Undelete(id);
+            //_repository.Undelete(id);
             return Ok();
         }
     }

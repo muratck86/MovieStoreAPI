@@ -23,7 +23,7 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.UpdateC
         }
         public void Handle()
         {
-            var customer = _repository.Get(e => e.Id == CustomerId);
+            var customer = _repository.Get(e => e.Id == CustomerId && e.IsDeleted == false);
             if(customer is null)
                 throw new InvalidOperationException($"Customer id {CustomerId} not found.");
             PropertyUpdateHelper.Update(customer, Model);

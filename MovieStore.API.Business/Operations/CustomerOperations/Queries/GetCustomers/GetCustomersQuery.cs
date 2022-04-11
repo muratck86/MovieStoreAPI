@@ -20,7 +20,7 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Queries.GetCusto
 
         public List<CustomersModel> Handle()
         {
-            var customers = _repository.GetAll(null).ToList<Customer>();
+            var customers = _repository.GetAll(x => x.IsDeleted == false).ToList<Customer>();
             return _mapper.Map<List<CustomersModel>>(customers);
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MovieStore.API.Domain.Entities
@@ -6,6 +7,5 @@ namespace MovieStore.API.Domain.Entities
     {
         [Key]
         public int Id { get; set; }
-        public bool IsDeleted { get; set; } = false;
     }
 }

@@ -1,4 +1,4 @@
-namespace MovieStore.API.Business.Common
+namespace MovieStore.API.Common.Enums
 {
     public enum Genres
     {

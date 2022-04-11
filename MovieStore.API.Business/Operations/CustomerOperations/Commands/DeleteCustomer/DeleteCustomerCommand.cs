@@ -1,6 +1,5 @@
 using System;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
 using MovieStore.API.Domain.Entities;
 
@@ -21,21 +20,12 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.DeleteC
         public int CustomerId { get; set; }
         public void Handle()
         {
-            var customer = _repository.Get(e => e.Id == CustomerId);
+            var customer = _repository.Get(e => e.Id == CustomerId && e.IsDeleted == false);
             if(customer is null)
                 throw new InvalidOperationException($"Customer id {CustomerId} not found.");
-            _repository.Delete(customer);
+            customer.IsDeleted = true;
+            _repository.Update(customer);
             _unitOfWork.Commit();
         }
-    }
-
-    public class DeleteCustomerModel
-    {
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string City { get; set; }
-        public DateTime BirthDate { get; set; }
     }
 }

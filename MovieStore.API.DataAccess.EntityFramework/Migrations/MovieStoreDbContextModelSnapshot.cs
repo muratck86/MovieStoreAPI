@@ -19,22 +19,7 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
                 .HasAnnotation("ProductVersion", "5.0.15")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MoviePlayer", b =>
-                {
-                    b.Property<int>("ActedMoviesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ActedMoviesId", "PlayersId");
-
-                    b.HasIndex("PlayersId");
-
-                    b.ToTable("MoviePlayer");
-                });
-
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Genre", b =>
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.CustomerGenre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,20 +29,51 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MovieId")
+                    b.Property<int?>("GenreId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("CustomersGenres");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.DirectorMovie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DirectedMovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DirectorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DirectedMovieId");
+
+                    b.HasIndex("DirectorId");
+
+                    b.ToTable("DirectorsMovies");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Genres");
                 });
@@ -68,9 +84,6 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("DirectorId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -86,9 +99,44 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DirectorId");
-
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.MovieGenre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("GenreId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenreId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MoviesGenres");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.MovieRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MovieRoles");
                 });
 
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Person", b =>
@@ -101,7 +149,7 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
                     b.Property<string>("BirthCity")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
@@ -122,6 +170,50 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
                     b.ToTable("People");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Person");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.PersonRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("MovieRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieRoleId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("PersonRoles");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.PlayerMovie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ActedMovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActedMovieId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayersMovies");
                 });
 
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Purchase", b =>
@@ -174,59 +266,85 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
                     b.HasDiscriminator().HasValue("Customer");
                 });
 
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Director", b =>
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.CustomerGenre", b =>
                 {
-                    b.HasBaseType("MovieStore.API.Domain.Entities.Person");
-
-                    b.HasDiscriminator().HasValue("Director");
-                });
-
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Player", b =>
-                {
-                    b.HasBaseType("MovieStore.API.Domain.Entities.Person");
-
-                    b.HasDiscriminator().HasValue("Player");
-                });
-
-            modelBuilder.Entity("MoviePlayer", b =>
-                {
-                    b.HasOne("MovieStore.API.Domain.Entities.Movie", null)
+                    b.HasOne("MovieStore.API.Domain.Entities.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("ActedMoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MovieStore.API.Domain.Entities.Player", null)
-                        .WithMany()
-                        .HasForeignKey("PlayersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Genre", b =>
-                {
-                    b.HasOne("MovieStore.API.Domain.Entities.Customer", null)
-                        .WithMany("FavouriteGenres")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("MovieStore.API.Domain.Entities.Movie", null)
-                        .WithMany("Genres")
-                        .HasForeignKey("MovieId");
+                    b.HasOne("MovieStore.API.Domain.Entities.Genre", "Genre")
+                        .WithMany()
+                        .HasForeignKey("GenreId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Movie", b =>
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.DirectorMovie", b =>
                 {
-                    b.HasOne("MovieStore.API.Domain.Entities.Director", "Director")
-                        .WithMany("DirectedMovies")
+                    b.HasOne("MovieStore.API.Domain.Entities.Movie", "DirectedMovie")
+                        .WithMany()
+                        .HasForeignKey("DirectedMovieId");
+
+                    b.HasOne("MovieStore.API.Domain.Entities.Person", "Director")
+                        .WithMany()
                         .HasForeignKey("DirectorId");
 
+                    b.Navigation("DirectedMovie");
+
                     b.Navigation("Director");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.MovieGenre", b =>
+                {
+                    b.HasOne("MovieStore.API.Domain.Entities.Genre", "Genre")
+                        .WithMany()
+                        .HasForeignKey("GenreId");
+
+                    b.HasOne("MovieStore.API.Domain.Entities.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId");
+
+                    b.Navigation("Genre");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.PersonRole", b =>
+                {
+                    b.HasOne("MovieStore.API.Domain.Entities.MovieRole", "MovieRole")
+                        .WithMany()
+                        .HasForeignKey("MovieRoleId");
+
+                    b.HasOne("MovieStore.API.Domain.Entities.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId");
+
+                    b.Navigation("MovieRole");
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("MovieStore.API.Domain.Entities.PlayerMovie", b =>
+                {
+                    b.HasOne("MovieStore.API.Domain.Entities.Movie", "ActedMovie")
+                        .WithMany()
+                        .HasForeignKey("ActedMovieId");
+
+                    b.HasOne("MovieStore.API.Domain.Entities.Person", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId");
+
+                    b.Navigation("ActedMovie");
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("MovieStore.API.Domain.Entities.Purchase", b =>
                 {
                     b.HasOne("MovieStore.API.Domain.Entities.Customer", "Customer")
-                        .WithMany("Purchases")
+                        .WithMany()
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("MovieStore.API.Domain.Entities.Movie", "Movie")
@@ -236,23 +354,6 @@ namespace MovieStore.API.DataAccess.EntityFramework.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Movie", b =>
-                {
-                    b.Navigation("Genres");
-                });
-
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("FavouriteGenres");
-
-                    b.Navigation("Purchases");
-                });
-
-            modelBuilder.Entity("MovieStore.API.Domain.Entities.Director", b =>
-                {
-                    b.Navigation("DirectedMovies");
                 });
 #pragma warning restore 612, 618
         }
