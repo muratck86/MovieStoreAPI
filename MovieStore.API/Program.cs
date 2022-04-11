@@ -24,7 +24,6 @@ namespace MovieStore.API
                 try
                 {
                     await ContextSeed.SeedGenresAsync(context);
-                    await ContextSeed.SeedMovieRolesAsync(context);
 
                 }
                 catch (Exception ex)

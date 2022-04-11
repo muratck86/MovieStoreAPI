@@ -45,7 +45,7 @@ namespace MovieStore.API.Business.Common
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GenreId));
             
             //MovieRoles
-            CreateMap<MovieRole, string>();
+            //CreateMap<MovieRole, string>();
                 //.ForMember(dest => dest, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<Genre, string>().ConvertUsing(g => g.Name);
