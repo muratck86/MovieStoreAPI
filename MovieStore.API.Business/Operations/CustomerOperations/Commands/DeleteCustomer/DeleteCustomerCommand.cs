@@ -10,17 +10,16 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.DeleteC
         private readonly IRepository<Customer> _repository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
+        public int CustomerId { get; set; }
         public DeleteCustomerCommand(IUnitOfWork unitOfWork, IMapper mapper, IRepository<Customer> repository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _repository = repository;
         }
-        public int CustomerId { get; set; }
         public void Handle()
         {
-            var customer = _repository.Get(e => e.Id == CustomerId && e.IsDeleted == false);
+            var customer = _repository.Get(e => e.Id == CustomerId);
             if(customer is null)
                 throw new InvalidOperationException($"Customer id {CustomerId} not found.");
             customer.IsDeleted = true;

@@ -19,16 +19,5 @@ namespace MovieStore.API.DataAccess.EntityFramework
                 await context.SaveChangesAsync();
             }
         }
-        public static async Task SeedMovieRolesAsync(MovieStoreDbContext context)
-        {
-            if (context.MovieRoles.Count() == 0)
-            {
-                foreach (var role in Enum.GetValues(typeof(MovieRoles)))
-                {
-                    await context.MovieRoles.AddAsync(new MovieRole{Name=role.ToString()});
-                }
-                await context.SaveChangesAsync();
-            }
-        }
     }
 }

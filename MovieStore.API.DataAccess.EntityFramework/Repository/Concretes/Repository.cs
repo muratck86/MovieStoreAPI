@@ -19,12 +19,12 @@ namespace MovieStore.API.DataAccess.EntityFramework.Repository.Concretes
         public IQueryable<T> GetAll(Expression<Func<T, bool>> filter = null)
         {
             if(filter is null)
-                return _unitOfWork.Context.Set<T>().AsQueryable();
-            return _unitOfWork.Context.Set<T>().Where(filter).AsQueryable();
+                return _unitOfWork.Context.Set<T>().Where(e => e.IsDeleted == false).AsQueryable();
+            return _unitOfWork.Context.Set<T>().Where(e => e.IsDeleted == false).Where(filter).AsQueryable();
         }
         public T Get(Expression<Func<T, bool>> filter)
         {
-            return _unitOfWork.Context.Set<T>().SingleOrDefault(filter);
+            return _unitOfWork.Context.Set<T>().Where(e => e.IsDeleted == false).SingleOrDefault(filter);
         }
         public void Add(T entity)
         {
@@ -36,7 +36,8 @@ namespace MovieStore.API.DataAccess.EntityFramework.Repository.Concretes
         }
         public void Delete(T entity)
         {
-            _unitOfWork.Context.Entry<T>(entity).State = EntityState.Deleted;
+            entity.IsDeleted = true;
+            _unitOfWork.Context.Entry<T>(entity).State = EntityState.Modified;
         }
     }
 }

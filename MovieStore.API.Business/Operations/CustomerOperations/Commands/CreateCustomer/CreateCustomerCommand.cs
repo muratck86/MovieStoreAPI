@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using MovieStore.API.Common.Enums;
 using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
@@ -8,46 +10,31 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.CreateC
 {
     public class CreateCustomerCommand
     {
-        private readonly IRepository<Customer> _customerRepository;
-        private readonly IRepository<Person> _personRepository;
-        private readonly IRepository<PersonRole> _personroleRepository;
+        private readonly IRepository<Customer> _repository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        public CreateCustomerModel Model { get; set; }
 
         public CreateCustomerCommand(
-            IRepository<Customer> customerRepository,
-            IRepository<Person> personRepository,
-            IRepository<PersonRole> personroleRepository,
+            IRepository<Customer> repository,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
-            _customerRepository = customerRepository;
-            _personRepository = personRepository;
-            _personroleRepository = personroleRepository;
+            _repository = repository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public CreateCustomerModel Model { get; set; }
         public void Handle()
         {
-            var customer = _customerRepository.Get(x => x.Email == Model.Email);
-            if(customer is not null)
+            var customer = _repository.Get(x => x.Email == Model.Email);
+            if (customer is not null)
                 throw new InvalidOperationException("This email is already bind to a Customer. Forgot your password?");
-            var person = _personRepository.Get(x => 
-                x.Name == Model.Name && 
-                x.LastName == Model.LastName && 
-                x.BirthDate == Model.BirhDate && 
-                x.BirthCity == Model.BirthCity);
-            if(person is not null)
-            {
-                customer = _mapper.Map<Customer>(Model);
-                customer.Id = person.Id;
-                _customerRepository.Update(customer);
-            }
-            else
-                _customerRepository.Add(customer);
-            _personroleRepository.Add(new PersonRole{MovieRole= new MovieRole{Name = MovieRoles.Customer.ToString()}, Person=customer});
+            // if (Model.FavouriteGenreIds.Count() > 0)
+            // {
+
+            // }
+            _repository.Add(customer);
             _unitOfWork.Commit();
         }
     }
@@ -60,5 +47,6 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.CreateC
         public string BirthCity { get ; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public IEnumerable<int> FavouriteGenreIds { get; set; }
     }
 }

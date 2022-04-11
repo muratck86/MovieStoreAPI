@@ -2,7 +2,6 @@ using System;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using MovieStore.API.Business.TokenOperations;
-using MovieStore.API.DataAccess.EntityFramework;
 using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
 using MovieStore.API.Domain.Entities;
 

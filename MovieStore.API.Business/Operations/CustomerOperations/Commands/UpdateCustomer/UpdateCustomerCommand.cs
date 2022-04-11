@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using MovieStore.API.Business.Common;
 using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
 using MovieStore.API.Domain.Entities;
@@ -40,5 +40,7 @@ namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.UpdateC
         public string Password { get; set; }
         public string BirthCity { get; set; }
         public DateTime BirthDate { get; set; }
+        public IEnumerable<int> FavouriteGenreIds { get; set; }
+
     }
 }
