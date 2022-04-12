@@ -1,30 +1,28 @@
 using System;
+using System.Linq;
 using AutoMapper;
-using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
-using MovieStore.API.Domain.Entities;
+using MovieStore.API.DataAccess.EntityFramework;
 
 namespace MovieStore.API.Business.Operations.CustomerOperations.Commands.DeleteCustomer
 {
     public class DeleteCustomerCommand
     {
-        private readonly IRepository<Customer> _repository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMovieStoreDbContext _context;
         private readonly IMapper _mapper;
         public int CustomerId { get; set; }
-        public DeleteCustomerCommand(IUnitOfWork unitOfWork, IMapper mapper, IRepository<Customer> repository)
+        public DeleteCustomerCommand(IMovieStoreDbContext context, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _repository = repository;
+            _context = context;
         }
         public void Handle()
         {
-            var customer = _repository.Get(e => e.Id == CustomerId);
+            var customer = _context.Customers.SingleOrDefault(e => e.Id == CustomerId);
             if(customer is null)
                 throw new InvalidOperationException($"Customer id {CustomerId} not found.");
             customer.IsDeleted = true;
-            _repository.Update(customer);
-            _unitOfWork.Commit();
+            _context.Customers.Update(customer);
+            _context.SaveChanges();
         }
     }
 }

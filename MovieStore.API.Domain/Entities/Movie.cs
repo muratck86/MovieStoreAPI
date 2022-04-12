@@ -8,11 +8,8 @@ namespace MovieStore.API.Domain.Entities
         public string Title { get; set; }
         public int Year { get; set; }
         public double Price { get; set; }
-        public IEnumerable<int> DirectorIds { get; set; }
-        public IEnumerable<Director> Directors { get; set; }
-        public IEnumerable<int> PlayerIds { get; set; }
-        public IEnumerable<Player> Players { get; set; }
-        public IEnumerable<int> GenreIds { get; set; }
-        public IEnumerable<Genre> Genres { get; set; }
+        public virtual List<Director> Directors { get; set; }
+        public virtual List<Player> Players { get; set; }
+        public virtual List<Genre> Genres { get; set; }
     }
 }

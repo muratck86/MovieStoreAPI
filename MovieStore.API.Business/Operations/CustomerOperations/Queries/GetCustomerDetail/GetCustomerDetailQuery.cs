@@ -1,26 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
-using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
-using MovieStore.API.Domain.Entities;
+using MovieStore.API.DataAccess.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieStore.API.Business.Operations.CustomerOperations.Queries.GetCustomerDetail
 {
     public class GetCustomerDetailQuery
     {
-        public int CustomerId { get; set; }
-        private readonly IRepository<Customer> _repository;
+        private readonly IMovieStoreDbContext _context;
         private readonly IMapper _mapper;
 
-        public GetCustomerDetailQuery(IRepository<Customer> repository, IMapper mapper)
+        public GetCustomerDetailQuery(IMovieStoreDbContext context, IMapper mapper)
         {
-            _repository = repository;
+            _context = context;
             _mapper = mapper;
         }
 
+        public int CustomerId { get; set; }
         public CustomerDetailModel Handle()
         {
-            var customer = _repository.Get(c => c.Id == CustomerId);
+            var customer = _context.Customers
+                .Include(c => c.CustomerGenres)
+                .ThenInclude(cg => cg.Genre)
+                .SingleOrDefault(c => c.Id == CustomerId);
             if(customer is null)
                 throw new InvalidOperationException("Customer not found.");
             return _mapper.Map<CustomerDetailModel>(customer);

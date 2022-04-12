@@ -9,10 +9,10 @@ namespace MovieStore.API.DataAccess.EntityFramework
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Person> People { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Director> Directors { get; set; }
-
-
+        public DbSet<CustomerGenre> CustomerGenres { get; set; }
         int SaveChanges();
     }
 }

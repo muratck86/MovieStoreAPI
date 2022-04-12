@@ -1,4 +1,3 @@
-using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,8 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MovieStore.API.Business.Common;
 using MovieStore.API.DataAccess.EntityFramework;
-using MovieStore.API.DataAccess.EntityFramework.Repository.Abstracts;
-using MovieStore.API.DataAccess.EntityFramework.Repository.Concretes;
 
 namespace MovieStore.API
 {
@@ -33,8 +30,7 @@ namespace MovieStore.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieStore.API", Version = "v1" });
             });
             services.AddDbContext<MovieStoreDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient(typeof(IRepository<>),typeof(Repository<>));
+            services.AddTransient<IMovieStoreDbContext, MovieStoreDbContext>();
             var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile());});
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);

@@ -9,9 +9,8 @@ namespace MovieStore.API.Domain.Entities
         public string Password { get; set; }
         public string RefreshToken { get; set; }
         public DateTime? RefreshTokenExpireDate { get; set; }
-        public IEnumerable<int> PurchaseIds { get; set; }
-        public IEnumerable<Purchase> Purchases { get; set; }
-        public IEnumerable<int> FavouriteGenreIds { get; set; }
-        public IEnumerable<Genre> FavouriteGenres { get; set; }
+        public virtual List<Purchase> Purchases { get; set; }
+        public virtual List<Genre> Genres { get; set; }
+        public virtual List<CustomerGenre> CustomerGenres { get; set; }
     }
 }

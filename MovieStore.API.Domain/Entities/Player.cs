@@ -5,8 +5,7 @@ namespace MovieStore.API.Domain.Entities
 {
     public class Player : Person
     {
-        public IEnumerable<int> MovieIds { get; set; }
-        public IEnumerable<Movie> Movies { get; set; }
+        public virtual List<Movie> Movies { get; set; }
 
     }
 }
